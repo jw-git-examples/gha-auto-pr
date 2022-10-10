@@ -29,8 +29,11 @@ jobs:
           gh pr create
           --base $DEV_BRANCH
           --head $MAIN_BRANCH
-          --title "Backport: $(git log --format='%s' -1)"
-          --body "Changes from $MAIN_BRANCH.\n\n**Do not use squash when merging!**"
+          --title "Backport changes from $MAIN_BRANCH to $DEV_BRANCH"
+          --body "Some commits were merged into $MAIN_BRANCH, so $DEV_BRANCH
+          should get them, too.
+
+          **Do not use squash when merging!**"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # only if there is no PR already opened
