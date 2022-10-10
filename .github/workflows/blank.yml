@@ -40,7 +40,7 @@ jobs:
 
       - name: check
         run: echo found something
-        if: steps.check.outputs.open_prs != ""
+        if: steps.check.outputs.open_prs != ''
 
       # Runs a single command using the runners shell
       - name: Create a pull request for updating devel with master
