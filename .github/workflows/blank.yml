@@ -52,4 +52,3 @@ jobs:
           --body "Commits from main. **Do not use squash when merging!**"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if 
