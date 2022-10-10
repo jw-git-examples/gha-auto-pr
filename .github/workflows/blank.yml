@@ -26,6 +26,16 @@ jobs:
       # Runs a single command using the runners shell
       - name: Create a pull request for updating devel with master
         run: >
+          gh pr list
+          --base devel
+          --head main
+          | grep "no pull requests match your search"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Runs a single command using the runners shell
+      - name: Create a pull request for updating devel with master
+        run: >
           gh pr create
           --base devel
           --head main
