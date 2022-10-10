@@ -29,7 +29,7 @@ jobs:
         run: >
           gh pr list
           --base devel
-          --head main
+          --head main;
           echo "::set-output name=prs::$(gh pr list)"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
