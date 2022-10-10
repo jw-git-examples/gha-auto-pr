@@ -1,0 +1,21 @@
+name: Create a pull request
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create a PR from main to devel
+        run: >
+          gh pr create
+          --base devel
+          --head main
+          --title "Backport changes from main to devel"
+          --body ""
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
