@@ -1,55 +1,37 @@
 # This is a basic workflow to help you get started with Actions
 
-name: open PR
+name: ensure dev is up-to-date
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
 
 env:
   MAIN_BRANCH: main
   DEV_BRANCH: devel
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  pr:
-    # The type of runner that the job will run on
+  create-dev-pr:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      - name: Check for PRs from master to devel
+      - name: Check for PRs from main to dev
         id: check
         run: >
           echo "::set-output name=open_prs::$(gh pr list --base $DEV_BRANCH --head $MAIN_BRANCH)"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create a pull request for updating devel with master
-        run: >
-          echo PRs ${{ steps.check.outputs.open_prs }}
-
-      - name: check
-        run: echo found something
-        if: steps.check.outputs.open_prs != ''
-
-      - name: Create a pull request for updating devel with master
+      - name: Create a pull request for updating dev branch with main branch
         run: >
           gh pr create
-          --base devel
-          --head main
+          --base $DEV_BRANCH
+          --head $MAIN_BRANCH
           --title "Backport: $(git log --format='%s' -1)"
-          --body "Commits from main. **Do not use squash when merging!**"
+          --body "Changes from $MAIN_BRANCH.\n\n**Do not use squash when merging!**"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # only if there is no PR open already
+        # only if there is no PR already opened
         if: steps.check.outputs.open_prs == ''
