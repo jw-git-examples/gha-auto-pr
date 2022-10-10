@@ -1,0 +1,41 @@
+name: Create a pull request
+
+on:
+  workflow_call:
+    inputs:
+      dest:
+        required: true
+        type: string
+      branch:
+        required: true
+        type: string
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check for open PRs from ${{ inputs.branch }} to ${{ inputs.dest }}
+        id: check
+        run: |
+          PRs=$(gh pr list --base ${{ inputs.dest }} --head ${{ inputs.branch }})
+          echo $PRs
+          echo "::set-output name=open_prs::$PRs"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create a PR for updating ${{ inputs.dest }} with ${{ inputs.branch }}
+        run: >
+          gh pr create
+          --base ${{ inputs.dest }}
+          --head ${{ inputs.branch }}
+          --title "Backport changes from ${{ inputs.branch }} to ${{ inputs.dest }}"
+          --body "Some commits were merged into ${{ inputs.branch }},
+          so ${{ inputs.dest }} should get them, too.
+
+          **Do not use squash-merge on this PR!**"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # only if there is no PR already opened
+        if: steps.check.outputs.open_prs == ''

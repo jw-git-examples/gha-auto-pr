@@ -1,0 +1,13 @@
+name: Ensure devel is up-to-date
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  update-dev:
+    uses: ./.github/workflows/create-pr.yml
+    with:
+      branch: main
+      dest: devel
+    secrets: inherit
