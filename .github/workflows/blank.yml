@@ -42,7 +42,6 @@ jobs:
         run: echo found something
         if: steps.check.outputs.open_prs != ''
 
-      # Runs a single command using the runners shell
       - name: Create a pull request for updating devel with master
         run: >
           gh pr create
@@ -52,3 +51,5 @@ jobs:
           --body "Commits from main. **Do not use squash when merging!**"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # only if there is no PR open already
+        if: steps.check.outputs.open_prs == ''
