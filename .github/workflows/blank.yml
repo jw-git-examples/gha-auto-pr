@@ -29,7 +29,8 @@ jobs:
           gh pr list
           --base devel
           --head main
-          | grep "no pull requests match your search"
+          | grep "no pull requests match your search" ;
+          echo mlaskacz $?
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
