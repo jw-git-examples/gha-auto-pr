@@ -1,23 +1,26 @@
-# This is a basic workflow to help you get started with Actions
-
-name: Ensure dev is up-to-date
+name: Open a PR ${{ inputs.base }}
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_call:
+    inputs:
+      base:
+        required: true
+        type: string
+      head:
+        required: true
+        type: string
 
 env:
-  MAIN_BRANCH: main
-  DEV_BRANCH: devel
+  MAIN_BRANCH: ${{ inputs.head }}
+  DEV_BRANCH: ${{ inputs.base }}
 
 jobs:
-  create-dev-pr:
+  create-pr:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
 
-      - name: Check for PRs from main to dev
+      - name: Check for PRs from ${{ inputs.head }} to ${{ inputs.base }}
         id: check
         run: >
           echo "::set-output name=open_prs::$(gh pr list --base $DEV_BRANCH --head $MAIN_BRANCH)"

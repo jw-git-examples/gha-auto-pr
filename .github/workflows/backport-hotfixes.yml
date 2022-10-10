@@ -1,0 +1,13 @@
+name: Ensure dev is up-to-date
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  create-dev-pr:
+    uses: ./.github/workflows/open-pr.yml
+    with:
+      base: devel
+      head: main
+    secrets: inherit
