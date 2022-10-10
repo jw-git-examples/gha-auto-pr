@@ -25,14 +25,19 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Create a pull request for updating devel with master
+        id: pr_check
         run: >
           gh pr list
           --base devel
           --head main
-          | grep "no pull requests match your search" ;
-          echo mlaskacz $?
+          echo "::set-output name=prs::$(gh pr list)"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Runs a single command using the runners shell
+      - name: Create a pull request for updating devel with master
+        run: >
+          echo mlaskacz ${{ steps.pr_check.outputs.prs }}
 
       # Runs a single command using the runners shell
       - name: Create a pull request for updating devel with master
