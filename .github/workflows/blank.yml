@@ -11,6 +11,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  MAIN_BRANCH: main
+  DEV_BRANCH: devel
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -23,21 +27,20 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
-      - name: Create a pull request for updating devel with master
-        id: pr_check
+      - name: Check for PRs from master to devel
+        id: check
         run: >
-          gh pr list
-          --base devel
-          --head main;
-          echo "::set-output name=prs::$(gh pr list)"
+          echo "::set-output name=open_prs::$(gh pr list --base $DEV_BRANCH --head $MAIN_BRANCH)"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Runs a single command using the runners shell
       - name: Create a pull request for updating devel with master
         run: >
-          echo mlaskacz ${{ steps.pr_check.outputs.prs }}
+          echo PRs ${{ steps.check.outputs.open_prs }}
+
+      - name: check
+        run: echo found something
+        if: steps.check.outputs.open_prs != ""
 
       # Runs a single command using the runners shell
       - name: Create a pull request for updating devel with master
@@ -49,3 +52,4 @@ jobs:
           --body "Commits from main. **Do not use squash when merging!**"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if 
