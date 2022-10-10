@@ -1,4 +1,4 @@
-name: Open a PR ${{ inputs.base }}
+name: Open a PR
 
 on:
   workflow_call:
