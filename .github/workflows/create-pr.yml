@@ -1,0 +1,21 @@
+name: Open a PR from main to devel
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  update-devel:
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create a PR
+        run: >
+          gh pr create
+          --base devel
+          --head main
+          --title "Backport changes from main to devel"
+          --body ""
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
