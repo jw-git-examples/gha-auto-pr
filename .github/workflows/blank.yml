@@ -30,10 +30,9 @@ jobs:
           --base $DEV_BRANCH
           --head $MAIN_BRANCH
           --title "Backport changes from $MAIN_BRANCH to $DEV_BRANCH"
-          --body "Some commits were merged into $MAIN_BRANCH, so $DEV_BRANCH
-          should get them, too.
+          --body "Some commits were merged into $MAIN_BRANCH, so $DEV_BRANCH should get them, too.
 
-          **Do not use squash when merging!**"
+          **Do not use squash-merge on this PR!**"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # only if there is no PR already opened
