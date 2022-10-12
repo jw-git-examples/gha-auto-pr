@@ -15,7 +15,7 @@ jobs:
           gh pr create
           --base devel
           --head main
-          --reviewer jan-warchol
+          --reviewer jw-git-examples/ziemniaki
           --title "Backport changes from main to devel"
           --body ""
         env:
