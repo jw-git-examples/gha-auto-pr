@@ -21,7 +21,7 @@ jobs:
         run: |
           PRs=$(gh pr list --base ${{ inputs.dest }} --head ${{ inputs.branch }})
           echo $PRs
-          echo "::set-output name=open_prs::$PRs"
+          echo "open_prs=$PRs" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
