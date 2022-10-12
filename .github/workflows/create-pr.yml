@@ -30,7 +30,7 @@ jobs:
           gh pr create
           --base ${{ inputs.dest }}
           --head ${{ inputs.branch }}
-          --reviewer jw-git-examples/ziemniaki
+          --reviewer @jw-git-examples/ziemniaki
           --title "Backport changes from ${{ inputs.branch }} to ${{ inputs.dest }}"
           --body "Some commits were merged into ${{ inputs.branch }},
           so ${{ inputs.dest }} should get them, too.
