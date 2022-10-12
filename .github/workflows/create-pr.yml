@@ -15,6 +15,7 @@ jobs:
           gh pr create
           --base devel
           --head main
+          --reviewer jan-warchol
           --title "Backport changes from main to devel"
           --body ""
         env:
