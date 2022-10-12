@@ -10,9 +10,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: search for the team
+        run: gh api graphql -f query='{organization(login:"jw-git-examples"){team(slug:"ziemniaki"){slug,id}}}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create a PR from main to devel
         run: >
-          gh pr create
+          GH_DEBUG=api gh pr create
           --base devel
           --head main
           --reviewer jw-git-examples/ziemniaki
