@@ -19,6 +19,15 @@ jobs:
       - name: Check for open PRs from ${{ inputs.branch }} to ${{ inputs.dest }}
         id: check
         run: |
+          changes=$(git diff ${{ inputs.dest }} ${{ inputs.branch }})
+          echo $changes
+          echo "changes=$changes" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check for open PRs from ${{ inputs.branch }} to ${{ inputs.dest }}
+        id: check
+        run: |
           PRs=$(gh pr list --base ${{ inputs.dest }} --head ${{ inputs.branch }})
           echo $PRs
           echo "open_prs=$PRs" >> $GITHUB_OUTPUT
