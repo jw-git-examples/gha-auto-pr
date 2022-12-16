@@ -19,7 +19,7 @@ jobs:
       - name: Check for open PRs from ${{ inputs.branch }} to ${{ inputs.dest }}
         id: check
         run: |
-          changes=$(git diff ${{ inputs.dest }} ${{ inputs.branch }})
+          changes=$(git diff origin/${{ inputs.dest }} origin/${{ inputs.branch }})
           echo $changes
           echo "changes=$changes" >> $GITHUB_OUTPUT
         env:
