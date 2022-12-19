@@ -27,7 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check for changes
-        id: diff
+        id: duff
         run: |
           changes=$(git diff origin/${{ inputs.dest }} origin/${{ inputs.branch }} | wc -l)
           echo "-------------"
@@ -38,11 +38,11 @@ jobs:
 
       - name: test 1
         run: echo rc 1
-        if: steps.diff.outputs.rc != '0'
+        if: steps.duff.outputs.rc != '0'
 
       - name: test 0
         run: echo rc 0
-        if: steps.diff.outputs.rc == '0'
+        if: steps.duff.outputs.rc == '0'
 
       - name: Check for changes
         id: diff
