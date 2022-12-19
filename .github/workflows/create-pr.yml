@@ -16,6 +16,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Fetch all branches
+        run: git fetch
+
+      # there may be merge commits that don't introduce any actual changes.
+      - name: Check for changes between ${{ inputs.branch }} and ${{ inputs.dest }}
+        id: diff
+        run: |
+          lines=$(git diff origin/${{ inputs.branch }} origin/${{ inputs.dest }} | wc -l)
+          echo $lines
+          echo "lines=$lines" >> $GITHUB_OUTPUT
+
       - name: Check for open PRs from ${{ inputs.branch }} to ${{ inputs.dest }}
         id: check
         run: |
@@ -38,4 +49,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # only if there is no PR already opened
-        if: steps.check.outputs.open_prs == ''
+        if: steps.check.outputs.open_prs == '' && steps.diff.outputs.lines != '0'
