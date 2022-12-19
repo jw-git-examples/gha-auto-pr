@@ -29,21 +29,29 @@ jobs:
       - name: Check for changes
         id: diff
         run: |
-          changes=$(git diff --stat origin/${{ inputs.dest }} origin/${{ inputs.branch }})
-          echo "====================="
-          echo $changes
-          echo "====================="
-          echo "changes=\"$changes\"" >> $GITHUB_OUTPUT
+          git diff --exit-code origin/${{ inputs.dest }} origin/${{ inputs.branch }}
+          echo "rc=$?" >> $GITHUB_OUTPUT
+          git diff --exit-code origin/${{ inputs.dest }} origin/${{ inputs.dest }}
+          echo "ook=$?" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: test
-        run: echo lolo
-        if: steps.diff.outputs.changes != ''
+        run: echo ook 1
+        if: steps.diff.outputs.ook == '1'
 
       - name: test
-        run: echo loloi
-        if: steps.diff.outputs.changes == ''
+        run: echo ook 0
+        if: steps.diff.outputs.ook == '0'
+
+
+      - name: test
+        run: echo rc 1
+        if: steps.diff.outputs.rc == '1'
+
+      - name: test
+        run: echo rc 0
+        if: steps.diff.outputs.rc == '0'
 
       - name: Check for open PRs from ${{ inputs.branch }} to ${{ inputs.dest }}
         id: check
