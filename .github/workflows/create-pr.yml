@@ -16,18 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: branches
-        run: |
-          git branch -a
-          git remote -v
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: fetch
-        run: |
-          git fetch
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Fetch all branches
+        run: git fetch
 
       - name: branches
         run: |
