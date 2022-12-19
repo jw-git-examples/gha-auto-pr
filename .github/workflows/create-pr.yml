@@ -29,30 +29,37 @@ jobs:
       - name: Check for changes
         id: diff
         run: |
-          (
-          set +e
-          git diff --exit-code origin/${{ inputs.dest }} origin/${{ inputs.branch }}
-          echo "rc=$?" >> $GITHUB_OUTPUT
-          )
-          git diff --exit-code origin/${{ inputs.dest }} origin/${{ inputs.dest }}
-          echo "ook=$?" >> $GITHUB_OUTPUT
+          changes=$(git diff origin/${{ inputs.dest }} origin/${{ inputs.branch }} | wc -l)
+          echo "-------------"
+          echo $changes
+          echo "rc=$changes" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: test
-        run: echo ook 1
-        if: steps.diff.outputs.ook == '1'
+      - name: test 1
+        run: echo rc 1
+        if: steps.diff.outputs.rc != '0'
 
-      - name: test
-        run: echo ook 0
-        if: steps.diff.outputs.ook == '0'
+      - name: test 0
+        run: echo rc 0
+        if: steps.diff.outputs.rc == '0'
 
+      - name: Check for changes
+        id: diff
+        run: |
+          (
+            set +e
+            git diff --exit-code origin/${{ inputs.dest }} origin/${{ inputs.branch }}
+            echo "rc=$?" >> $GITHUB_OUTPUT
+          )
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: test
+      - name: test 1
         run: echo rc 1
         if: steps.diff.outputs.rc == '1'
 
-      - name: test
+      - name: test 0
         run: echo rc 0
         if: steps.diff.outputs.rc == '0'
 
