@@ -29,7 +29,7 @@ jobs:
       - name: Check for changes
         id: diff
         run: |
-          changes=$(git diff origin/${{ inputs.dest }} origin/${{ inputs.branch }})
+          changes=$(git diff --stat origin/${{ inputs.dest }} origin/${{ inputs.branch }})
           echo "changes=$changes" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
