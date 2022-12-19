@@ -19,20 +19,12 @@ jobs:
       - name: Fetch all branches
         run: git fetch
 
-      - name: Check for changes
+      - name: Check for changes between ${{ inputs.branch }} and ${{ inputs.dest }}
         id: diff
         run: |
-          lines=$(git diff origin/${{ inputs.dest }} origin/${{ inputs.branch }} | wc -l)
+          lines=$(git diff origin/${{ inputs.branch }} origin/${{ inputs.dest }} | wc -l)
           echo $lines
           echo "lines=$lines" >> $GITHUB_OUTPUT
-
-      - name: test 1
-        run: echo rc 1
-        if: steps.diff.outputs.lines != '0'
-
-      - name: test 0
-        run: echo rc 0
-        if: steps.diff.outputs.lines == '0'
 
       - name: Check for open PRs from ${{ inputs.branch }} to ${{ inputs.dest }}
         id: check
@@ -56,4 +48,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # only if there is no PR already opened
-        if: steps.check.outputs.open_prs == ''
+        if: steps.check.outputs.open_prs == '' && steps.diff.outputs.lines != '0'
