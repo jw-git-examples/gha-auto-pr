@@ -33,7 +33,7 @@ jobs:
           echo "====================="
           echo $changes
           echo "====================="
-          echo "changes=$changes" >> $GITHUB_OUTPUT
+          echo "changes=\"$changes\"" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
