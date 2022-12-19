@@ -29,8 +29,10 @@ jobs:
       - name: Check for changes
         id: diff
         run: |
+          (
           git diff --exit-code origin/${{ inputs.dest }} origin/${{ inputs.branch }}
           echo "rc=$?" >> $GITHUB_OUTPUT
+          )
           git diff --exit-code origin/${{ inputs.dest }} origin/${{ inputs.dest }}
           echo "ook=$?" >> $GITHUB_OUTPUT
         env:
