@@ -16,7 +16,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Check for open PRs from ${{ inputs.branch }} to ${{ inputs.dest }}
+      - name: branches
+        run: |
+          git branch -a
+          git remote -v
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: fetch
+        run: |
+          git fetch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: branches
         run: |
           git branch -a
           git remote -v
