@@ -30,6 +30,7 @@ jobs:
         id: diff
         run: |
           (
+          set +e
           git diff --exit-code origin/${{ inputs.dest }} origin/${{ inputs.branch }}
           echo "rc=$?" >> $GITHUB_OUTPUT
           )
