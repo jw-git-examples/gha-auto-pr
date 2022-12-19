@@ -17,6 +17,13 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Check for open PRs from ${{ inputs.branch }} to ${{ inputs.dest }}
+        run: |
+          git branch -a
+          git remote -v
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check for open PRs from ${{ inputs.branch }} to ${{ inputs.dest }}
         id: check
         run: |
           changes=$(git diff origin/${{ inputs.dest }} origin/${{ inputs.branch }})
